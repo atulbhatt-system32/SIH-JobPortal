@@ -23,11 +23,16 @@ def login():
     return render_template('login.html')
 
 
+@app.route('/adminPanel')
+def adminPanel():
+    return render_template('adminPanel.html')
+
+
 def scrap():
     print("hello")
 
 
-@app.route('/upl', methods=['GET', 'POST'])
+@app.route('/upload', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
         file = request.files['jobDescription']
