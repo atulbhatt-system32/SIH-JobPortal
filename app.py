@@ -23,20 +23,18 @@ def login():
     return render_template('login.html')
 
 
-@app.route('/adminPanel', methods=['GET', 'POST'])
-def upload():
-    return render_template('adminPanel.html')
-
 def scrap():
     print("hello")
 
-@app.route('/upload', methods=['GET','POST'])
-def upl():
+
+@app.route('/upl', methods=['GET', 'POST'])
+def upload():
     if request.method == 'POST':
         file = request.files['jobDescription']
         file.save(file.filename)
-        print("hi")
-        list = [1,2,3,4,5]
-        return render_template("ind.html",list=list)
+        result = "file saved"
+        return render_template("adminPanel.html", result=result)
+
+
 if __name__ == '__main__':
     app.run()
