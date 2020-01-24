@@ -104,7 +104,7 @@
                         <div class="input-group">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="inputGroupFile04" name="jobDescription" aria-describedby="inputGroupFileAddon04">
-                                <label class="custom-file-label" for="inputGroupFile04">Choose pdf or document file</label>
+                                <label class="custom-file-label" for="inputGroupFile04" id="NameOfTheFile">Choose pdf or document file</label>
                             </div>
                         </div>
                     </div>
@@ -126,6 +126,7 @@
     </section>
 
     <section>
+    <form action="jobDataTable" method="post">
         <div class="container">
             <div class="row-md">
                 <div class="col">
@@ -135,6 +136,7 @@
                             <tr>
                                 <th scope="col">Job Title</th>
                                 <td class="pt-3-half" contenteditable="false">{% if 'jobTitle' in formData %}
+                                    {% set title = formData['jobTitle'] %}
                                     <p>{{ formData['jobTitle'] }}</p>
                                     {% endif %}
                                 </td>
@@ -144,6 +146,7 @@
                                 <tr>
                                     <th scope="row">Job Description</th>
                                     <td class="pt-3-half" contenteditable="false">{% if 'jobDesc' in formData %}
+                                        {% set desc = formData['jobDesc'] %}
                                         <p>{{ formData['jobDesc'] }}</p>
                                         {% endif %}
                                     </td>
@@ -151,21 +154,34 @@
                                 <tr>
                                     <th scope="row">Qualification</th>
                                     <td class="pt-3-half" contenteditable="false">{% if 'jobQualification' in formData %}
-                                        <p>{{ formData['jobQualification'] }}</p>
+                                        {% set qual = formData['jobQualification'] %}
+                                        {{ formData['jobQualification'] }}
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Salary</th>
-                                    <td class="pt-3-half" contenteditable="false"></td>
+                                    <td class="pt-3-half" contenteditable="false">{% if 'jobQualification' in formData %}
+                                        {% set sal = 90000 %}
+                                        <p>90000</p>
+                                        {% endif %}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Location</th>
-                                    <td class="pt-3-half" contenteditable="false"></td>
+                                    <td class="pt-3-half" contenteditable="false">{% if 'jobQualification' in formData %}
+                                        {% set loc = "Dehradun" %}
+                                        <p>Dehradun</p>
+                                        {% endif %}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Number of vacancies</th>
-                                    <td class="pt-3-half" contenteditable="false"></td>
+                                    <td class="pt-3-half" contenteditable="false">{% if 'jobQualification' in formData %}
+                                        {% set vac = 50 %}
+                                        <p>50</p>
+                                        {% endif %}
+                                    </td>
                                 </tr>
                             </tbody>
                     </table>
@@ -177,12 +193,19 @@
                     <button class="btn btn-primary" type="button" id="inputGroupFileAddon06">Edit</button>
                 </div>
                 <div class="col-md-5">
-                    <button class="btn btn-primary" type="button" id="inputGroupFileAddon07">Publish</button>
+                    <button class="btn btn-primary" type="Submit" id="inputGroupFileAddon07">Publish</button>
                 </div>
-
+                <input type = "hidden" value = "{{ title }}" name = "jobTitle">
+                <input type = "hidden" value = "{{ desc }}" name = "jobDesc">
+                <input type = "hidden" value = "{{ qual }}" name = "jobQual">
+                <input type = "hidden" value = "{{ sal }}" name = "jobSal">
+                <input type = "hidden" value = "{{ loc }}" name = "jobLoc">
+                <input type = "hidden" value = "{{ vac }}" name = "jobVac">
             </div>
 
         </div>
+    </form>
+
     </section>
     <br>
     <br>
@@ -197,7 +220,6 @@
                     <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='https://in.linkedin.com';"><i class="fab fa-linkedin-in"></i></button>
                     <button type="button" class="btn btn-primary btn-lg" onclick="window.location.href='https://www.facebook.com';"><i class="fab fa-facebook"></i></button>
                 </div>
-
             </div>
         </div>
     </section>

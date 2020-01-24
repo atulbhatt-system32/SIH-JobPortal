@@ -2,7 +2,7 @@ import PyPDF2
 from flask import Flask, render_template, request
 from pathlib import Path
 import os
-
+import sqlite3
 
 app = Flask(__name__)
 
@@ -24,6 +24,7 @@ def login():
 
 @app.route('/adminPanel')
 def adminPanel():
+    portal_db()
     return render_template('adminPanel.html')
 
 
@@ -50,6 +51,29 @@ def scrap(pathToFile):
     return jobData
 
 
+@app.route('/jobDataTable', methods=['GET', 'POST'])
+def jobDataTable():
+    print("hi")
+    if request.method == 'POST':
+        idDb = 1
+        titleDB =request.form['jobTitle']
+        descDB = request.form['jobDesc']
+        qualDB = request.form['jobQual']
+        salDB = request.form['jobSal']
+        locDB = request.form['jobLoc']
+        vacDB = request.form['jobVac']
+        conn = sqlite3.connect('JOB PORTAL.db')
+        conn.execute("INSERT into published_jobsPost(id , jobTitle,jobDesc,jobQual,jobSalary,jobLocation, jobVacancies) values(?,?,?,?,?,?,?)",
+                     (idDb,titleDB,descDB,qualDB,salDB,locDB,vacDB))
+        conn.commit()
+        print("Records created successfully");
+        conn.close()
+
+
+    return "jobs.html"
+
+
+
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     if request.method == 'POST':
@@ -64,10 +88,18 @@ def upload():
             continue
         if my_file.is_file():
             formData = scrap(location)
-            print(formData)
             return render_template("adminPanel.html", formData=formData)
         else:
             return render_template("adminPanel.html")
+
+
+def portal_db():
+    conn = sqlite3.connect('JOB PORTAL.db')
+    conn.execute('CREATE TABLE IF NOT EXISTS  published_jobsPost(id INT, jobTitle TEXT, jobDesc TEXT,jobQual TEXT, jobSalary TEXT, jobLocation TEXT, jobVacancies TEXT)')
+    print("Table created successfully")
+
+    conn.close()
+
 
 
 
