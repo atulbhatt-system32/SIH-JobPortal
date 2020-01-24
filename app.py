@@ -3,6 +3,7 @@ from flask import Flask, render_template, request
 from pathlib import Path
 import os
 
+
 app = Flask(__name__)
 
 
@@ -26,15 +27,27 @@ def adminPanel():
     return render_template('adminPanel.html')
 
 
-def scrap(pathtoFile):
-    pdfFileObj = open(pathtoFile, 'rb')
+def scrap(pathToFile):
+    pdfFileObj = open(pathToFile, 'rb')
     pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
     totalPages = pdfReader.numPages
     pdfData = ""
     for i in range(totalPages):
         pageObj = pdfReader.getPage(i)
         pdfData = pdfData + pageObj.extractText()
-    return pdfData
+    jobData = {}
+    pdfData = pdfData.split(':')
+    for i in range(len(pdfData)):
+        if "Job Title" in pdfData[i]:
+            jobData['jobTitle'] = pdfData[i + 1].replace("\n", "").replace("Job Title", "").replace("Job Description",
+                                                                                                    "").replace(
+                "Qualification", "")
+        if "Job Description" in pdfData[i]:
+            jobData['jobDesc'] = pdfData[i + 1].replace("\n", "")
+        if "Qualification" in pdfData[i]:
+            jobData['jobQualification'] = pdfData[i + 1].replace("\n", "").replace("-", "  \n")
+
+    return jobData
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -45,13 +58,17 @@ def upload():
         root = os.path.abspath(os.path.dirname(__file__))
         location = os.path.join(root, "jobDescription.pdf")
         my_file = Path(location)
+        formData = {}
         while not my_file.is_file():
             print("not found")
             continue
+        if my_file.is_file():
+            formData = scrap(location)
+            print(formData)
+            return render_template("adminPanel.html", formData=formData)
+        else:
+            return render_template("adminPanel.html")
 
-        file_data = scrap(location)
-        print(file_data)
-        return render_template("adminPanel.html", jobDesc= file_data)
 
 
 if __name__ == '__main__':

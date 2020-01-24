@@ -9,23 +9,33 @@
     <link href="/static/fontawesome/css/all.css" rel="stylesheet">
 
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-    <script crossorigin="anonymous"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <style>
+        .pt-3-half {
+            padding-top: 1.4rem;
+        }
+    </style>
 
 </head>
 
 <body>
     <script>
         $(document).ready(function() {
-            $("#Admin-Container").hide();
-        });
-        $(document).ready(function() {
-            $("#inputGroupFileAddon04").click(function() {
-                $("#Admin-Container").show();
-            });
+            $('input[type="file"]').change(function(e) {
+                var fileName = e.target.files[0].name;
+                $("#NameOfTheFile").html(fileName);
 
+            });
+        });
+
+        $(document).ready(function() {
+            $("#inputGroupFileAddon06").click(function() {
+                $(".pt-3-half").attr("contenteditable", "true");
+
+            });
         });
     </script>
     <section id="title">
@@ -97,7 +107,7 @@
                                 <label class="custom-file-label" for="inputGroupFile04">Choose pdf or document file</label>
                             </div>
                         </div>
-        </div>
+                    </div>
                     <section id="btn-submit" style="margin-top: 50px;">
                         <div class="row">
                             <div class=col-md-2 style="margin-left: 10px;">
@@ -121,34 +131,43 @@
                 <div class="col">
 
                     <table class="table table-striped">
-                        <thead>
+                         <thead>
                             <tr>
                                 <th scope="col">Job Title</th>
-                                <td></td>
+                                <td class="pt-3-half" contenteditable="false">{% if 'jobTitle' in formData %}
+                                    <p>{{ formData['jobTitle'] }}</p>
+                                    {% endif %}
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">Job Description</th>
-                                <td>{{ jobDesc }}</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Qualification</th>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Salary</th>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Location</th>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">Number of vacancies</th>
-                                <td></td>
-                            </tr>
-                        </tbody>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Job Description</th>
+                                    <td class="pt-3-half" contenteditable="false">{% if 'jobDesc' in formData %}
+                                        <p>{{ formData['jobDesc'] }}</p>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Qualification</th>
+                                    <td class="pt-3-half" contenteditable="false">{% if 'jobQualification' in formData %}
+                                        <p>{{ formData['jobQualification'] }}</p>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Salary</th>
+                                    <td class="pt-3-half" contenteditable="false"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Location</th>
+                                    <td class="pt-3-half" contenteditable="false"></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Number of vacancies</th>
+                                    <td class="pt-3-half" contenteditable="false"></td>
+                                </tr>
+                            </tbody>
                     </table>
                 </div>
             </div>
