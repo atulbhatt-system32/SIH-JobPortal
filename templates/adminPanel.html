@@ -162,24 +162,24 @@
                                 <tr>
                                     <th scope="row">Salary</th>
                                     <td class="pt-3-half" contenteditable="false">{% if 'jobQualification' in formData %}
-                                        {% set sal = 90000 %}
-                                        <p>90000</p>
+                                        {% set sal = formData['Salary'] %}
+                                        {{ formData['Salary'] }}
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Location</th>
                                     <td class="pt-3-half" contenteditable="false">{% if 'jobQualification' in formData %}
-                                        {% set loc = "Dehradun" %}
-                                        <p>Dehradun</p>
+                                        {% set qual = formData['jobQualification'] %}
+                                        {{ formData['Location'] }}
                                         {% endif %}
                                     </td>
                                 </tr>
                                 <tr>
                                     <th scope="row">Number of vacancies</th>
                                     <td class="pt-3-half" contenteditable="false">{% if 'jobQualification' in formData %}
-                                        {% set vac = 50 %}
-                                        <p>50</p>
+                                        {% set vac = formData['Vacancies'] %}
+                                        {{ formData['Vacancies'] }}
                                         {% endif %}
                                     </td>
                                 </tr>

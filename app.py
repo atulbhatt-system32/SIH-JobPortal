@@ -44,14 +44,18 @@ def scrap(pathToFile):
     jobData = {}
     pdfData = pdfData.split(':')
     for i in range(len(pdfData)):
-        if "Job Title" in pdfData[i]:
+        if "Title" in pdfData[i]:
             jobData['jobTitle'] = pdfData[i + 1].replace("\n", "").replace("Job Title", "").replace("Job Description",
                                                                                                     "").replace(
                 "Qualification", "")
-        if "Job Description" in pdfData[i]:
+        if "Description" in pdfData[i]:
             jobData['jobDesc'] = pdfData[i + 1].replace("\n", "")
         if "Qualification" in pdfData[i]:
             jobData['jobQualification'] = pdfData[i + 1].replace("\n", "").replace("-", ",")
+        if "Salary" in pdfData[i]:
+            jobData['Salary'] = pdfData[i + 1].replace("\n", "").replace("-", ",")
+        if "Vacancies" in pdfData[i]:
+            jobData['Vacancies'] = pdfData[i + 1].replace("\n", "").replace("-", "\n")
 
     return jobData
 
@@ -120,7 +124,7 @@ def users_db():
         'CREATE TABLE IF NOT EXISTS  users(username TEXT PRIMARY KEY ,email TEXT PRIMARY KEY , password  TEXT NOT NULL , question TEXT NOT NULL , answer TEXT NOT NULL )')
     print("User created successfully")
     conn.close()
-    return "hi"
+
 
 
 
