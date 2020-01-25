@@ -24,11 +24,10 @@
     <button type="button" class="btn btn-success dropdown-toggle btn-sm my-2 my-sm-0 ml-auto" id="dropdownMenuOffset" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-offset="10,20" style="border-radius: 50%;border: none;">
       <i class="fas fa-user-friends"></i>
     </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
-      <a class="dropdown-item" href="#">Action</a>
-      <a class="dropdown-item" href="#">Another action</a>
-      <a class="dropdown-item" href="#">Something else here</a>
-    </div>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuOffset">
+                        <a class="dropdown-item" href="#">Log out</a>
+                        <a class="dropdown-item" href="#">Settings</a>
+                    </div>
   </div>
 			<p style="">username@gmail.com</p>
 		</nav>
@@ -55,7 +54,7 @@
           Jobs
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href="#">Active Jobs</a>
+          <a class="dropdown-item" href="{{  url_for('jobs') }}">Active Jobs</a>
           <a class="dropdown-item" href="#">Inactive Jobs</a>
           <a class="dropdown-item" href="#">Applied Jobs</a>
         </div>

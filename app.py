@@ -7,12 +7,16 @@ import sqlite3
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/home')
 def index():
     return render_template('index.html')
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/registerMe')
+def registerMe():
+    pass
+
+@app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         print(request.form['username'])
@@ -46,32 +50,44 @@ def scrap(pathToFile):
         if "Job Description" in pdfData[i]:
             jobData['jobDesc'] = pdfData[i + 1].replace("\n", "")
         if "Qualification" in pdfData[i]:
-            jobData['jobQualification'] = pdfData[i + 1].replace("\n", "").replace("-", "  \n")
+            jobData['jobQualification'] = pdfData[i + 1].replace("\n", "").replace("-", ",")
 
     return jobData
 
 
 @app.route('/jobDataTable', methods=['GET', 'POST'])
 def jobDataTable():
-    print("hi")
     if request.method == 'POST':
-        idDb = 1
-        titleDB =request.form['jobTitle']
+
+        titleDB = request.form['jobTitle']
         descDB = request.form['jobDesc']
         qualDB = request.form['jobQual']
         salDB = request.form['jobSal']
         locDB = request.form['jobLoc']
         vacDB = request.form['jobVac']
         conn = sqlite3.connect('JOB PORTAL.db')
-        conn.execute("INSERT into published_jobsPost(id , jobTitle,jobDesc,jobQual,jobSalary,jobLocation, jobVacancies) values(?,?,?,?,?,?,?)",
-                     (idDb,titleDB,descDB,qualDB,salDB,locDB,vacDB))
+        cur = conn.cursor()
+        cur.execute("INSERT into published_jobsPost(jobTitle, jobDesc, jobQual, jobSalary, jobLocation, jobVacancies) values(?,?,?,?,?,?)",
+                     (titleDB, descDB, qualDB, salDB, locDB, vacDB))
         conn.commit()
+        tableData = {"title": titleDB, "desc": descDB, "qual": qualDB, "sal": salDB, "loc": locDB, "vac": vacDB}
         print("Records created successfully");
         conn.close()
+    return render_template('jobs.html', tableData=tableData)
 
 
-    return "jobs.html"
+@app.route('/jobs', methods=['GET', 'POST'])
+def jobs():
+    conn = sqlite3.connect('JOB PORTAL.db')
+    cur = conn.cursor()
+    cur.execute("select * from published_jobsPost")
+    rows = cur.fetchall()
+    return render_template('jobs.html', rows=rows)
 
+
+@app.route('/registration', methods=['GET', 'POST'])
+def registration():
+    return render_template('registration.html')
 
 
 @app.route('/upload', methods=['GET', 'POST'])
@@ -82,7 +98,6 @@ def upload():
         root = os.path.abspath(os.path.dirname(__file__))
         location = os.path.join(root, "jobDescription.pdf")
         my_file = Path(location)
-        formData = {}
         while not my_file.is_file():
             print("not found")
             continue
@@ -95,10 +110,16 @@ def upload():
 
 def portal_db():
     conn = sqlite3.connect('JOB PORTAL.db')
-    conn.execute('CREATE TABLE IF NOT EXISTS  published_jobsPost(id INT, jobTitle TEXT, jobDesc TEXT,jobQual TEXT, jobSalary TEXT, jobLocation TEXT, jobVacancies TEXT)')
+    conn.execute('CREATE TABLE IF NOT EXISTS  published_jobsPost(id INTEGER PRIMARY KEY AUTOINCREMENT, jobTitle TEXT, jobDesc TEXT,jobQual TEXT, jobSalary TEXT, jobLocation TEXT, jobVacancies TEXT)')
     print("Table created successfully")
 
+def users_db():
+    conn = sqlite3.connect('users.db')
+    conn.execute(
+        'CREATE TABLE IF NOT EXISTS  users(username TEXT PRIMARY KEY ,email TEXT PRIMARY KEY , password  TEXT NOT NULL , question TEXT NOT NULL , answer TEXT NOT NULL )')
+    print("User created successfully")
     conn.close()
+    return "hi"
 
 
 
